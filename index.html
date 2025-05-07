@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para mamá con amor ❤️</title>
+    <style>
+        /* RESET SEGURO PARA MÓVILES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #FFF5F5;
+            position: relative;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* FOTOS CON FALLBACK SEGURO */
+        .foto-recuerdo {
+            position: fixed;
+            width: clamp(110px, 35vw, 170px);
+            height: clamp(110px, 35vw, 170px);
+            border: 10px solid white;
+            border-radius: 4px;
+            object-fit: cover;
+            z-index: 1;
+            opacity: 0.9;
+            filter: brightness(0.97);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            animation: flotar 15s infinite ease-in-out;
+            transform: rotate(var(--rot));
+            transition: transform 0.5s ease, opacity 0.3s;
+            will-change: transform;
+        }
+
+        /* POSICIONES CON FALLBACK ABSOLUTO */
+        .foto1 { top: 12%; left: 5%; --rot: -10deg; animation-delay: 0s; }
+        .foto2 { bottom: 12%; right: 5%; --rot: 5deg; animation-delay: 3s; }
+        .foto3 { top: 60%; left: 7%; --rot: 8deg; animation-delay: 6s; }
+
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0) rotate(var(--rot)); }
+            50% { transform: translateY(-15px) rotate(calc(var(--rot) + 5deg)); }
+        }
+
+        /* VISOR A PRUEBA DE FALLOS */
+        .visor-foto {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.25s ease-out;
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .foto-ampliada {
+            max-width: 95%;
+            max-height: 85%;
+            border: 12px solid white;
+            border-radius: 8px;
+            transform: scale(0.96);
+            transition: transform 0.25s ease;
+            object-fit: contain;
+        }
+
+        .foto-ampliada.activa {
+            transform: scale(1);
+        }
+
+        /* CARTA A PRUEBA DE ERRORES */
+        .contenedor-carta {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .titulo {
+            font-size: clamp(1.8rem, 6vw, 2.4rem);
+            color: #FF6B6B;
+            margin-bottom: 10px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .subtitulo {
+            font-size: clamp(1rem, 3.5vw, 1.1rem);
+            color: #666;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* SOBRE INDESTRUCTIBLE */
+        .sobre {
+            width: clamp(180px, 55vw, 220px);
+            height: clamp(130px, 40vw, 160px);
+            background: #FFE6E6;
+            border-radius: 8px;
+            position: relative;
+            margin-bottom: 30px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 120, 120, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        .sobre:active {
+            transform: scale(0.97);
+        }
+
+        .sobre::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 55%;
+            height: 16px;
+            background: #FF9E9E;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .texto-sobre {
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            color: #FF4A4A;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        /* CARTA CON FALLBACKS */
+        .carta-abierta {
+            width: 92%;
+            max-width: 480px;
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 15px 40px rgba(255, 100, 100, 0.18);
+            display: none;
+            position: relative;
+            animation: slideUp 0.4s ease-out forwards;
+            border: 1px solid #FFD1D1;
+            margin: 0 auto;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .carta-abierta::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(to right, #FF9E9E, #FF6B6B, #FF9E9E);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .mensaje {
+            font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+
+        .firma {
+            font-style: italic;
+            font-weight: 600;
+            color: #FF6B6B;
+            text-align: right;
+            margin-top: 18px;
+            font-size: clamp(1rem, 3.8vw, 1.15rem);
+        }
+
+        /* BOTÓN CON FALLBACK */
+        .btn-volver {
+            background: linear-gradient(to right, #FF8E8E, #FF6B6B);
+            color: white;
+            border: none;
+            padding: clamp(10px, 3vw, 12px) clamp(20px, 6vw, 25px);
+            border-radius: 50px;
+            font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 90, 90, 0.25);
+            transition: all 0.2s ease;
+            display: none;
+            font-weight: 500;
+            border: 1px solid #FF7E7E;
+        }
+
+        .btn-volver:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 8px rgba(255, 90, 90, 0.3);
+        }
+
+        /* CORAZÓN CON FALLBACK */
+        .corazon {
+            display: inline-block;
+            animation: latido 1.4s infinite ease-in-out;
+        }
+
+        @keyframes latido {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* PREVENCIÓN DE ERRORES */
+        @media (orientation: portrait) {
+            .foto-recuerdo {
+                width: clamp(100px, 30vw, 160px);
+                height: clamp(100px, 30vw, 160px);
+            }
+        }
+
+        @media (max-width: 400px) {
+            .foto-recuerdo {
+                min-width: 90px;
+                min-height: 90px;
+            }
+            .sobre {
+                width: 160px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- FOTOS CON PRELOAD -->
+    <link rel="preload" as="image" href="https://i.ibb.co/SwQnv5nR/foto1.jpg">
+    <link rel="preload" as="image" href="https://i.ibb.co/xKRCWqK2/foto2.jpg">
+    <link rel="preload" as="image" href="https://i.ibb.co/VcTdDw9P/foto3.jpg">
+
+    <img src="https://i.ibb.co/SwQnv5nR/foto1.jpg" class="foto-recuerdo foto1" alt="Diego y mamá" loading="eager">
+    <img src="https://i.ibb.co/xKRCWqK2/foto2.jpg" class="foto-recuerdo foto2" alt="Recuerdo especial" loading="eager">
+    <img src="https://i.ibb.co/VcTdDw9P/foto3.jpg" class="foto-recuerdo foto3" alt="Amor de madre" loading="eager">
+
+    <!-- VISOR DE FOTOS -->
+    <div class="visor-foto" id="visorFoto">
+        <img id="fotoAmpliada" class="foto-ampliada" src="" alt="Foto ampliada" loading="eager">
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="contenedor-carta">
+        <h1 class="titulo">¡Feliz Día Mamá! <span class="corazon">❤️</span></h1>
+        <p class="subtitulo">De tu hijo que te ama, Diego Gatica</p>
+        
+        <div class="sobre" id="sobre">
+            <p class="texto-sobre">Abrir</p>
+        </div>
+        
+        <div class="carta-abierta" id="carta">
+            <p class="mensaje">Mi querida madre:</p>
+            <p class="mensaje">Hoy quiero recordarte lo especial que eres para mí. Cada risa, cada consejo y cada abrazo tuyo son mi tesoro.</p>
+            <p class="mensaje">Estas fotos son solo pequeños momentos de todo lo que hemos compartido. ¡Gracias por ser la mejor mamá del mundo!</p>
+            <p class="mensaje">Cada día a tu lado es un regalo que atesoro en mi corazón. Tus abrazos, tus palabras y tu amor incondicional son mi mayor bendición. ¡Gracias por ser mi guía, mi fuerza y mi refugio siempre!</p>
+            <p class="firma">Con todo mi amor,<br>Diego Gatica</p>
+        </div>
+        
+        <button class="btn-volver" id="btnVolver">Cerrar carta</button>
+    </div>
+
+    <script>
+        // CÓDIGO A PRUEBA DE FALLOS
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                // ELEMENTOS
+                const sobre = document.getElementById('sobre');
+                const carta = document.getElementById('carta');
+                const btnVolver = document.getElementById('btnVolver');
+                const fotos = document.querySelectorAll('.foto-recuerdo');
+                const visorFoto = document.getElementById('visorFoto');
+                const fotoAmpliada = document.getElementById('fotoAmpliada');
+
+                // ABRIR CARTA
+                function abrirCarta() {
+                    sobre.style.opacity = '0';
+                    sobre.style.transform = 'scale(0.9)';
+                    
+                    setTimeout(() => {
+                        sobre.style.display = 'none';
+                        carta.style.display = 'block';
+                        btnVolver.style.display = 'block';
+                    }, 250);
+                }
+
+                // CERRAR CARTA
+                function cerrarCarta() {
+                    carta.style.opacity = '0';
+                    carta.style.transform = 'translateY(10px)';
+                    
+                    setTimeout(() => {
+                        carta.style.display = 'none';
+                        btnVolver.style.display = 'none';
+                        sobre.style.display = 'flex';
+                        setTimeout(() => {
+                            sobre.style.opacity = '1';
+                            sobre.style.transform = 'scale(1)';
+                        }, 20);
+                    }, 250);
+                }
+
+                // VISOR DE FOTOS
+                function manejarFotos() {
+                    fotos.forEach(foto => {
+                        foto.addEventListener('click', function() {
+                            fotoAmpliada.src = this.src;
+                            visorFoto.style.display = 'flex';
+                            setTimeout(() => {
+                                fotoAmpliada.classList.add('activa');
+                            }, 10);
+                        });
+                    });
+
+                    visorFoto.addEventListener('click', function(e) {
+                        if (e.target === visorFoto || e.target === fotoAmpliada) {
+                            fotoAmpliada.classList.remove('activa');
+                            setTimeout(() => {
+                                visorFoto.style.display = 'none';
+                            }, 200);
+                        }
+                    });
+                }
+
+                // EVENTOS SEGUROS
+                sobre.addEventListener('click', abrirCarta);
+                btnVolver.addEventListener('click', cerrarCarta);
+                manejarFotos();
+
+                // POLYFILL PARA CLAMP (por si acaso)
+                if (!CSS.supports('width', 'clamp(1px, 1vw, 2px)')) {
+                    document.querySelectorAll('.foto-recuerdo').forEach(foto => {
+                        foto.style.width = '110px';
+                        foto.style.height = '110px';
+                    });
+                }
+            } catch (e) {
+                console.log('Error mínimo:', e);
+                // FALLBACK VISUAL
+                document.body.innerHTML += '<p style="color:#FF6B6B;text-align:center;">¡Mamá, te amo! ❤️</p>';
+            }
+        });
+    </script>
+</body>
+</html>
